@@ -1,0 +1,75 @@
+﻿@page "{id:int?}"
+@model Desafio_SistemaCadastro_ThomasGergDoBrasil._0__Apresentacao.Pages.Clientes.EditModel
+@{
+    ViewData["Title"] = "Editar Cliente";
+}
+
+<h2>Editar Cliente</h2>
+
+<form method="post" enctype="multipart/form-data">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <input type="hidden" asp-for="Cliente.ClienteId" />
+    <div class="form-group">
+        <label asp-for="Cliente.Nome" class="control-label"></label>
+        <input asp-for="Cliente.Nome" class="form-control" />
+        <span asp-validation-for="Cliente.Nome" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Cliente.Email" class="control-label"></label>
+        <input asp-for="Cliente.Email" class="form-control" />
+        <span asp-validation-for="Cliente.Email" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Cliente.LogotipoFile" class="control-label">Logotipo</label>
+        <input asp-for="Cliente.LogotipoFile" type="file" class="form-control" />
+        <span asp-validation-for="Cliente.Logotipo" class="text-danger"></span>
+        @if (!string.IsNullOrEmpty(Model.Cliente.Logotipo))
+        {
+            <img src="@Model.Cliente.Logotipo" alt="Logotipo" class="img-thumbnail" style="max-height: 100px;" />
+        }
+    </div>
+
+    <div class="form-group">
+        <label class="control-label">Endereços</label>
+        <div id="logradourosContainer">
+            @if (Model.Cliente?.Logradouros != null && Model.Cliente.Logradouros.Any())
+            {
+                @for (int i = 0; i < Model.Cliente.Logradouros.Count; i++)
+                {
+                    <div class="input-group mb-3" id="logradouroInputContainer_@i">
+                        <input type="text" name="Enderecos[@i]" value="@Model.Cliente.Logradouros[i].Endereco" class="form-control enderecoInput" placeholder="Endereço" />
+                        <input type="hidden" name="LogradouroIds[@i]" value="@Model.Cliente.Logradouros[i].LogradouroId" />
+                        <div class="input-group-append">
+                            <button type="submit" asp-page-handler="RemoverEndereco" asp-route-index="@i" class="btn btn-danger removerEnderecoBtn" data-index="@i">Remover</button>
+                        </div>
+                    </div>
+                }
+                <div class="input-group mb-3">
+                    <input type="text" name="Enderecos[@Model.Cliente.Logradouros.Count]" class="form-control enderecoInput" placeholder="Endereço" />
+                    <div class="input-group-append">
+                        <button type="submit" asp-page-handler="AdicionarEndereco" class="btn btn-success adicionarEnderecoBtn">Adicionar</button>
+                    </div>
+                </div>
+            }
+            else
+            {
+                <div class="input-group mb-3">
+                    <input type="text" name="Enderecos[0]" class="form-control enderecoInput" placeholder="Endereço" />
+                    <div class="input-group-append">
+                        <button type="submit" asp-page-handler="AdicionarEndereco" class="btn btn-success adicionarEnderecoBtn">Adicionar</button>
+                    </div>
+                </div>
+            }
+        </div>
+        <span asp-validation-for="Cliente.Logradouros" class="text-danger"></span>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Salvar</button>
+    <a asp-page="Index" class="btn btn-secondary">Cancelar</a>
+</form>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

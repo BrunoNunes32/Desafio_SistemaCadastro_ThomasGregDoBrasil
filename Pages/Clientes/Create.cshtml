@@ -1,0 +1,60 @@
+﻿@page
+@model Desafio_SistemaCadastro_ThomasGergDoBrasil._0__Apresentacao.Pages.Clientes.CreateModel
+@{
+    ViewData["Title"] = "Criar Novo Cliente";
+}
+
+<h1>Criar Cliente</h1>
+
+<div class="row">
+    <div >
+        <form method="post" enctype="multipart/form-data">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Cliente.Nome" class="control-label"></label>
+                <input asp-for="Cliente.Nome" class="form-control" />
+                <span asp-validation-for="Cliente.Nome" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Cliente.Email" class="control-label"></label>
+                <input asp-for="Cliente.Email" class="form-control" />
+                <span asp-validation-for="Cliente.Email" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Logotipofile" class="control-label">Logotipo</label>
+                <input asp-for="Logotipofile" id="Logotipo" name="Logotipo" type="file" class="form-control" />
+            </div>
+            <div class="form-group">
+                <label class="control-label">Endereços</label>
+                <div id="LogradourosContainer">
+                    @if (Model.Cliente != null && Model.Cliente.Logradouros != null && Model.Cliente.Logradouros.Any())
+                    {
+                        @for (int i = 0; i < Model.Cliente.Logradouros.Count; i++)
+                        {
+                            <div class="input-group mb-3" id="enderecoInputContainer@(i + 1)">
+                                <input type="text" name="Enderecos[@i]" value="@Model.Cliente.Logradouros" class="form-control enderecoInput" placeholder="Endereço" />
+                                <div class="input-group-append">
+                                    <button type="submit" asp-page-handler="RemoverEndereco" id="RemoverEndereco" asp-route-index="@i" class="btn btn-danger removerEnderecoBtn">Remover</button>
+                                </div>
+                            </div>
+                        }
+                    }
+                    else
+                    {
+                        <div class="input-group mb-3" id="enderecoInputContainer1">
+                            <input type="text" name="Enderecos[0]" class="form-control enderecoInput" placeholder="Endereço" />
+                            <div class="input-group-append">
+                                <button type="submit" asp-page-handler="AdicionarEndereco" class="btn btn-success adicionarEnderecoBtn" id="AdicionarEndereco">Adicionar</button>
+                            </div>
+                        </div>
+                    }
+                </div>
+                <span asp-validation-for="Cliente.Logradouros" class="text-danger"></span>
+            </div>
+
+            <button type="submit" class="btn btn-primary">Criar</button>
+            <a asp-page="./Index" class="btn btn-secondary">Cancelar</a>
+        </form>
+    </div>
+</div>
+

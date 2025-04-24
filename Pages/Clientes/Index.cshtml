@@ -1,0 +1,62 @@
+﻿@page "/"
+@model Desafio_SistemaCadastro_ThomasGergDoBrasil._0__Apresentacao.Pages.Clientes.IndexModel
+@{
+    ViewData["Title"] = "Lista de Clientes";
+}
+
+<h2>Lista de Clientes</h2>
+
+<p>
+    <a asp-page="Create" class="btn btn-primary">Criar Novo Cliente</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Clientes[0].Nome)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Clientes[0].Email)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Clientes[0].Logradouros)
+            </th>
+            <th>Ações</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.Clientes)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Nome)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Email)
+                </td>
+                <td>
+                    @if (item.Logradouros != null && item.Logradouros.Any())
+                    {
+                        <ul>
+                            @foreach (var logradouro in item.Logradouros)
+                            {
+                                <li>
+                                    @logradouro.Endereco
+                                </li>
+                            }
+                        </ul>
+                    }
+                    else
+                    {
+                        <p>Nenhum endereço cadastrado</p>
+                    }
+                </td>
+                <td>
+                    <a asp-page="./Edit" asp-route-id="@item.ClienteId" class="btn btn-primary btn-sm">Editar</a> |
+                    <a asp-page="./Details" asp-route-id="@item.ClienteId" class="btn btn-secondary btn-sm">Detalhes</a> |
+                    <a asp-page="./Delete" asp-route-id="@item.ClienteId" class="btn btn-danger btn-sm">Deletar</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
